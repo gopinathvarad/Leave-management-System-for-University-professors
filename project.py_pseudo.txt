@@ -1,0 +1,699 @@
+IMPORT csv
+
+IMPORT pandas as pd
+
+IMPORT numpy as np
+
+IMPORT os as os
+
+DEFINE FUNCTION general(n,ID):
+
+    MAX=2
+
+    times=5
+
+    if(n<times):
+
+        OUTPUT("General Leave requested\n")
+
+        with open("Employees.csv","r", newline="") as file:
+
+            SET a TO csv.writer(file)
+
+            reader=csv.reader(file)
+
+            rows=list(csv.reader(file))
+
+            x=len(rows)
+
+            FOR i IN range(x):
+
+                l=rows[i]
+
+                IF l[0]==ID:
+
+                    wf=pd.read_csv("Employees.csv")
+
+                    wf.loc[i-1,'STATUS']=f'Applied FOR general leave ({MAX} days)'
+
+                    wf.to_csv("Employees.csv",index=False)
+
+                    
+
+    ELSE:
+
+        OUTPUT("You cant apply FOR this leave\n")
+
+
+
+DEFINE FUNCTION sick(n,ID):
+
+    MAX=3
+
+    times=10
+
+    if(n<times):
+
+        OUTPUT("Sick Leave requested\n")
+
+        with open("Employees.csv","r", newline="") as file:
+
+            SET a TO csv.writer(file)
+
+            reader=csv.reader(file)
+
+            rows=list(csv.reader(file))
+
+            x=len(rows)
+
+            FOR i IN range(x):
+
+                l=rows[i]
+
+                IF l[0]==ID:
+
+                    wf=pd.read_csv("Employees.csv")
+
+                    wf.loc[i-1,'STATUS']='Applied FOR sick leave'
+
+                    wf.to_csv("Employees.csv",index=False)
+
+
+
+DEFINE FUNCTION maternity(n,ID):
+
+    MAX=84
+
+    times=1
+
+    if(n<times):
+
+        OUTPUT("Maternity Leave requested\n")
+
+        with open("Employees.csv","r", newline="") as file:
+
+            SET a TO csv.writer(file)
+
+            reader=csv.reader(file)
+
+            rows=list(csv.reader(file))
+
+            x=len(rows)
+
+            FOR i IN range(x):
+
+                l=rows[i]
+
+                IF l[0]==ID:
+
+                    wf=pd.read_csv("Employees.csv")
+
+                    wf.loc[i-1,'STATUS']=f'Applied FOR Maternity leave ({MAX} days)'
+
+                    wf.to_csv("Employees.csv",index=False)
+
+
+
+DEFINE FUNCTION marriage(n,ID):
+
+    MAX=3
+
+    times=1
+
+    if(n<times):
+
+        OUTPUT("Marriage Leave requested\n")
+
+        with open("Employees.csv","r", newline="") as file:
+
+            SET a TO csv.writer(file)
+
+            reader=csv.reader(file)
+
+            rows=list(csv.reader(file))
+
+            x=len(rows)
+
+            FOR i IN range(x):
+
+                l=rows[i]
+
+                IF l[0]==ID:
+
+                    wf=pd.read_csv("Employees.csv")
+
+                    wf.loc[i-1,'STATUS']=f'Applied FOR Marriage leave ({MAX} days)'
+
+                    wf.to_csv("Employees.csv",index=False)
+
+
+
+DEFINE FUNCTION holiday(n,ID):
+
+    MAX=18
+
+    times=1
+
+    if(n<times):
+
+        OUTPUT("Holiday requested\n")
+
+        with open("Employees.csv","r", newline="") as file:
+
+            SET a TO csv.writer(file)
+
+            reader=csv.reader(file)
+
+            rows=list(csv.reader(file))
+
+            x=len(rows)
+
+            FOR i IN range(x):
+
+                l=rows[i]
+
+                IF l[0]==ID:
+
+                    wf=pd.read_csv("Employees.csv")
+
+                    wf.loc[i-1,'STATUS']=f'Applied FOR Holiday ({MAX} days)'
+
+                    wf.to_csv("Employees.csv",index=False)
+
+
+
+DEFINE FUNCTION earned(ID):
+
+    MAX=10
+
+    OUTPUT("Earned Leave will be approved\n")
+
+    with open("Employees.csv","r", newline="") as file:
+
+        SET a TO csv.writer(file)
+
+        reader=csv.reader(file)
+
+        rows=list(csv.reader(file))
+
+        x=len(rows)
+
+        FOR i IN range(x):
+
+            l=rows[i]
+
+            IF l[0]==ID:
+
+                wf=pd.read_csv("Employees.csv")
+
+                wf.loc[i-1,'STATUS']=f'Approved'
+
+                wf.to_csv("Employees.csv",index=False)
+
+
+
+
+
+
+
+DEFINE FUNCTION add_user():
+
+    OUTPUT()
+
+    l=[]
+
+    SET ID TO int(INPUT("Enter User ID :: "))
+
+    with open("Employees.csv","r") as file:
+
+        rows=list(csv.reader(file))
+
+        x=len(rows)
+
+        FOR i IN range(x):
+
+            l=rows[i]
+
+            IF l[0]==str(ID):
+
+                OUTPUT(f"ID already exists")
+
+                RETURN
+
+    OUTPUT()
+
+    with open("Employees.csv", "a", newline="") as file:
+
+        writer=csv.writer(file)
+
+        password= INPUT("Enter the password :: ")
+
+        SET name TO INPUT("Enter your name :: ")
+
+        SET salary TO int(INPUT("Enter the salary :: "))
+
+        status='Not Applied'
+
+        SET details TO [ID,password,name,salary,status]
+
+        writer.writerow(details)
+
+    OUTPUT()
+
+
+
+DEFINE FUNCTION add_admin():
+
+    OUTPUT()
+
+    l=[]
+
+    SET ID TO int(INPUT("Enter Admin ID :: "))
+
+    with open("Admins.csv","r") as file:
+
+        rows=list(csv.reader(file))
+
+        x=len(rows)
+
+        FOR i IN range(x):
+
+            l=rows[i]
+
+            IF l[0]==str(ID):
+
+                OUTPUT(f"ID already exists")
+
+                RETURN
+
+    OUTPUT()
+
+    with open("Admins.csv", "a", newline="") as file:
+
+        SET writer TO csv.writer(file)
+
+        password= INPUT("Enter password :: ")
+
+        SET name TO INPUT("Enter your name :: ")
+
+        SET details TO [ID,password,name]
+
+        writer.writerow(details)
+
+    OUTPUT()
+
+
+
+DEFINE FUNCTION login_user(ID,password):
+
+    l=[]
+
+    success_id=""
+
+    success_pw=""
+
+    with open("Employees.csv","r") as file:
+
+        rows=list(csv.reader(file))
+
+        x=len(rows)
+
+        FOR i IN range(x):
+
+            l=rows[i]
+
+            IF l[0]==str(ID) and l[1]==password:
+
+                success_id=str(ID)
+
+                success_pw=password
+
+                OUTPUT(f"Login Successful FOR user {l[2]}")
+
+                apply_leave(ID)
+
+            ELSE:
+
+                continue
+
+    IF success_id!=str(ID) or success_pw!=password:
+
+        OUTPUT("Re-enter user id and password")
+
+        id=int(INPUT("Enter User Login Id "))
+
+        pw=INPUT("Enter User Password ")
+
+        login_user(str(id),pw)
+
+        
+
+
+
+DEFINE FUNCTION login_admin(ID,password):
+
+    l=[]
+
+    success_id=""
+
+    success_pw=""
+
+    with open("Admins.csv","r") as file:
+
+        rows=list(csv.reader(file))
+
+        x=len(rows)
+
+        FOR i IN range(x):
+
+            l=rows[i]
+
+            IF l[0]==str(ID) and l[1]==password:
+
+                success_id=l[0]
+
+                success_pw=l[1]
+
+                OUTPUT(f"Login Successful FOR user {l[2]}")
+
+                OUTPUT("All IDs elligible FOR approval : ")
+
+                display_leave_id()    
+
+            ELSE:
+
+                continue
+
+    IF success_id!=str(ID) or success_pw!=password:
+
+        OUTPUT("Re-enter Admin id and password")
+
+        id=int(INPUT("Enter Admin Login Id "))
+
+        pw=INPUT("Enter Admin Password ")
+
+        login_admin(str(id),pw)
+
+
+
+DEFINE FUNCTION display_leave_id():
+
+    names=[]
+
+    IDs=[]
+
+    with open("Employees.csv","r", newline="") as file:
+
+        SET a TO csv.writer(file)
+
+        reader=csv.reader(file)
+
+        rows=list(csv.reader(file))
+
+        x=len(rows)
+
+        FOR i IN range(x):
+
+            l=rows[i]
+
+            IF l[4]!='Not Applied' and i!=0:
+
+                IF l[4]!='Denied':
+
+                    IDs.append(l[0])
+
+                    OUTPUT(l[0])
+
+                    names.append(l[2])
+
+
+
+    x=len(IDs)
+
+    FOR i IN IDs:
+
+        IF str(i) IN IDs:
+
+            admin_approve(i)
+
+        
+
+    
+
+DEFINE FUNCTION admin_approve(ID):
+
+    with open("Employees.csv","r", newline="") as file:
+
+        SET a TO csv.writer(file)
+
+        reader=csv.reader(file)
+
+        rows=list(csv.reader(file))
+
+        x=len(rows)
+
+        i=1
+
+        WHILE i<x:
+
+            l=rows[i]
+
+            i=i+1
+
+            #OUTPUT(l[0],ID)
+
+            IF l[0]==str(ID) and l[4]!='Approved':
+
+                ch=INPUT(f"Approve Leave FOR ID {ID} ?....Y or N\n")
+
+                IF ch=='Y':
+
+                    wf=pd.read_csv("Employees.csv")
+
+                    wf.loc[i-2,'STATUS']='Approved'
+
+                    wf.to_csv("Employees.csv",index=False)
+
+                    OUTPUT("Approval done")
+
+                    
+
+                ELSE:
+
+                    wf=pd.read_csv("Employees.csv")
+
+                    wf.loc[i-2,'STATUS']='Denied'
+
+                    wf.to_csv("Employees.csv",index=False)
+
+                    OUTPUT("Application Denied")
+
+                RETURN
+
+                                   
+
+DEFINE FUNCTION apply_leave(ID):
+
+    SET ch TO 0
+
+    WHILE ch != -1:
+
+        OUTPUT("Press 1 FOR General leave")
+
+        OUTPUT("Press 2 FOR Sick leave")
+
+        OUTPUT("Press 3 FOR Maternity leave")
+
+        OUTPUT("Press 4 FOR Marriage leave")
+
+        OUTPUT("Press 5 FOR Holiday")
+
+        OUTPUT("Press 6 FOR Earned leave")
+
+        OUTPUT("Press 7 to Logout")
+
+        SET ch TO int(INPUT("Enter Your Choice :: "))
+
+
+
+        IF ch EQUALS 1:
+
+            g=int(INPUT("Enter number of times you have taken General leave previosly: "))
+
+            general(g,ID)
+
+        
+
+        ELSEIF ch EQUALS 2:
+
+            g=int(INPUT("Enter number of times you have taken Sick leave previosly: "))
+
+            sick(g,ID)
+
+        
+
+        ELSEIF ch EQUALS 3:
+
+            g=int(INPUT("Enter number of times you have taken Maternityleave previosly: "))
+
+            maternity(g,ID)
+
+
+
+        ELSEIF ch EQUALS 4:
+
+            g=int(INPUT("Enter number of times you have taken Marriage leave previosly: "))
+
+            marriage(g,ID)
+
+        
+
+        ELSEIF ch EQUALS 5:
+
+            g=int(INPUT("Enter number of times you have taken Holiday previosly: "))
+
+            holiday(g,ID)
+
+        
+
+        ELSEIF ch EQUALS 6:
+
+            earned(ID)
+
+
+
+        ELSEIF ch EQUALS 7:
+
+            OUTPUT("Loging Out...")
+
+            SET ch TO -1
+
+        ELSE:
+
+            OUTPUT("Invalid Choice !!!")
+
+            OUTPUT()
+
+
+
+
+
+
+
+IF not os.path.isfile("./Employees.csv"):
+
+    with open("Employees.csv", "w", newline="") as file:
+
+        headings=['ID','PASSWORD','NAME','SALARY','STATUS']
+
+        writer=csv.DictWriter(file,fieldnames=headings)
+
+        writer.writeheader()
+
+
+
+IF not os.path.isfile("./Admins.csv"):
+
+    with open("Admins.csv", "w", newline="") as file:
+
+        heading=['ID','PASSWORD','NAME']
+
+        writer=csv.DictWriter(file,fieldnames=heading)
+
+        writer.writeheader()
+
+
+
+DEFINE FUNCTION main():
+
+    OUTPUT("WELCOME TO LEAVE MANAGEMENT SYSTEM")
+
+    SET ch TO 0
+
+    WHILE ch != -1:
+
+        OUTPUT("Press 1 to Add User")
+
+        OUTPUT("Press 2 to Login into User")
+
+        OUTPUT("Press 3 to Add Admin")
+
+        OUTPUT("Press 4 to Login into Admin")
+
+        OUTPUT("Press 5 to Exit")
+
+        SET ch TO int(INPUT("Enter Your Choice :: "))
+
+
+
+        IF ch EQUALS 1:
+
+            add_user()
+
+        
+
+        ELSEIF ch EQUALS 2:
+
+            id=int(INPUT("Enter User Login Id "))
+
+            pw=INPUT("Enter User Password ")
+
+            login_user(str(id),pw)
+
+        
+
+        ELSEIF ch EQUALS 3:
+
+            add_admin()
+
+
+
+        ELSEIF ch EQUALS 4:
+
+            id=int(INPUT("Enter Admin Login Id "))
+
+            pw=INPUT("Enter Admin Password ")
+
+            login_admin(str(id),pw)
+
+        
+
+        ELSEIF ch EQUALS 5:
+
+            OUTPUT("Thanks For Using our software...")
+
+            SET ch TO -1
+
+        
+
+        ELSE:
+
+            OUTPUT("Invalid Choice !!!")
+
+            OUTPUT()
+
+
+
+IF __name__=="__main__":
+
+    main()
+
+
+
+
+
+# add_user()
+
+# add_user()
+
+# add_admin()
+
+#login_user('1','aaa')
+
+#login_user('2','bbb')
+
+#login_admin('1','aaa')
+
+#display_leave_id()
+
+#admin_approve(3)
